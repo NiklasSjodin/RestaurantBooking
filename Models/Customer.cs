@@ -4,7 +4,7 @@ namespace RestaurantBooking.Models
 {
     public class Customer
     {
-        [Key] 
+        [Key]
         public int CustomerID { get; set; }
 
         [Required]
