@@ -51,7 +51,7 @@ namespace RestaurantBooking.Controllers
         public async Task<ActionResult> DeleteCustomer(int id)
         {
             await _customerService.DeleteCustomerAsync(id);
-            return Ok("Deleted customer successfully!");
+            return Ok("Customer deleted!");
         }
     }
 }
