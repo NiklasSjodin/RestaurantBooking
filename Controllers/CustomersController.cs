@@ -25,33 +25,78 @@ namespace RestaurantBooking.Controllers
         [Route("customer/{id}")]
         public async Task<ActionResult<GetCustomerDTO>> GetCustomerById(int id)
         {
-            var customer = await _customerService.GetCustomerByIdAsync(id);
-            return Ok(customer);
+            try
+            {
+                var customer = await _customerService.GetCustomerByIdAsync(id);
+                return Ok(customer);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected eror occurred.");
+            }
         }
 
         [HttpPost]
         [Route("createCustomer")]
         public async Task<ActionResult> CreateCustomer(CreateCustomerDTO createCustomer)
         {
-            await _customerService.AddCustomerAsync(createCustomer);
+            try
+            {
+                await _customerService.AddCustomerAsync(createCustomer);
 
-            return Ok("Customer created successfully!");
+                return Ok(createCustomer);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, "An error occurred while creating the customer.");
+            }
+            
         }
 
         [HttpPut]
         [Route("updateCustomer/{id}")]
         public async Task<ActionResult> UpdateCustomer(int id, UpdateCustomerDTO updateCustomer)
         {
-            await _customerService.UpdateCustomerAsync(updateCustomer);
-            return Ok("Customer updated!");
+            try
+            {
+                await _customerService.UpdateCustomerAsync(updateCustomer);
+                return Ok(updateCustomer);
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }catch(Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the customer.");
+            }
+            
         }
 
         [HttpDelete]
         [Route("deleteCustomer/{id}")]
         public async Task<ActionResult> DeleteCustomer(int id)
         {
-            await _customerService.DeleteCustomerAsync(id);
-            return Ok("Customer deleted!");
+            try
+            {
+                await _customerService.DeleteCustomerAsync(id);
+                return Ok("Customer deleted!");
+            }
+            catch(KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch(Exception ex)
+            {
+                return StatusCode(500, $"No customer with ID {id} found!");
+            }
         }
     }
 }
