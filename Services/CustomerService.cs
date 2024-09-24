@@ -1,4 +1,5 @@
-﻿using RestaurantBooking.Data.Repos.IRepos;
+﻿using Microsoft.AspNetCore.Http.HttpResults;
+using RestaurantBooking.Data.Repos.IRepos;
 using RestaurantBooking.Models;
 using RestaurantBooking.Models.DTOs.Customer;
 using RestaurantBooking.Services.IServices;
@@ -30,15 +31,23 @@ namespace RestaurantBooking.Services
         {
             var foundCustomer = await _customerRepository.GetCustomerByIdAsync(id);
 
-            var customer = new GetCustomerDTO
+            if(foundCustomer != null)
             {
-                CustomerID = foundCustomer.CustomerID,
-                FirstName = foundCustomer.FirstName,
-                LastName = foundCustomer.LastName,
-                PhoneNumber = foundCustomer.PhoneNumber,
-            };
+                var customer = new GetCustomerDTO
+                {
+                    CustomerID = foundCustomer.CustomerID,
+                    FirstName = foundCustomer.FirstName,
+                    LastName = foundCustomer.LastName,
+                    PhoneNumber = foundCustomer.PhoneNumber,
+                };
 
-            return customer;
+                return customer;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Customer with ID {id} not found!");
+            }
+            
         }
         public async Task AddCustomerAsync(CreateCustomerDTO createCustomer)
         {
@@ -62,11 +71,20 @@ namespace RestaurantBooking.Services
         {
             var customer = await _customerRepository.GetCustomerByIdAsync(updateCustomer.CustomerID);
 
-            customer.FirstName = updateCustomer.FirstName;
-            customer.LastName = updateCustomer.LastName;
-            customer.PhoneNumber = updateCustomer.PhoneNumber;
+            if(customer != null)
+            {
+                customer.FirstName = updateCustomer.FirstName;
+                customer.LastName = updateCustomer.LastName;
+                customer.PhoneNumber = updateCustomer.PhoneNumber;
 
-            await _customerRepository.UpdateCustomerAsync(customer);
+                await _customerRepository.UpdateCustomerAsync(customer);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Customer not found!");
+            }
+
+            
         }
     }
 }
