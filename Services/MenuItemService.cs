@@ -24,7 +24,7 @@ namespace RestaurantBooking.Services
                 Name = mi.Name,
                 Price = mi.Price,
                 IsAvailable = mi.IsAvailable,
-            });
+            }).ToList();
             return menuItemsList;
         }
 
