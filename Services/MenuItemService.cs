@@ -31,14 +31,23 @@ namespace RestaurantBooking.Services
         public async Task<GetMenuItemDTO> GetMenuItemByIdAsync(int id)
         {
             var foundMenuItem = await _menuItemRepository.GetMenuItemByIdAsync(id);
-            var menuItem = new GetMenuItemDTO
+
+            if(foundMenuItem != null)
             {
-                ItemId = foundMenuItem.ItemId,
-                Name = foundMenuItem.Name,
-                Price = foundMenuItem.Price,
-                IsAvailable = foundMenuItem.IsAvailable,
-            };
-            return menuItem;
+                var menuItem = new GetMenuItemDTO
+                {
+                    ItemId = foundMenuItem.ItemId,
+                    Name = foundMenuItem.Name,
+                    Price = foundMenuItem.Price,
+                    IsAvailable = foundMenuItem.IsAvailable,
+                };
+                return menuItem;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Menu Item with ID {id} not found!");
+            }
+            
 
         }
         public async Task AddMenuItemAsync(CreateMenuItemDTO createMenuItem)
@@ -63,11 +72,18 @@ namespace RestaurantBooking.Services
         {
             var menuItem = await _menuItemRepository.GetMenuItemByIdAsync(updateMenuItem.ItemId);
 
-            menuItem.Name = updateMenuItem.Name;
-            menuItem.Price = updateMenuItem.Price;
-            menuItem.IsAvailable = updateMenuItem.IsAvailable;
+            if(menuItem != null)
+            {
+                menuItem.Name = updateMenuItem.Name;
+                menuItem.Price = updateMenuItem.Price;
+                menuItem.IsAvailable = updateMenuItem.IsAvailable;
 
-            await _menuItemRepository.UpdateMenuItemAsync(menuItem);
+                await _menuItemRepository.UpdateMenuItemAsync(menuItem);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Menu Item not found!");
+            }
         }
     }
 }
