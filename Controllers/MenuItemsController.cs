@@ -34,7 +34,7 @@ namespace RestaurantBooking.Controllers
         public async Task<ActionResult> CreateMenuItem(CreateMenuItemDTO createMenuItem)
         {
             await _menuItemService.AddMenuItemAsync(createMenuItem);
-            return Ok("Menu Item created successfully!");
+            return Ok(createMenuItem);
         }
 
         [HttpPut]
@@ -42,8 +42,9 @@ namespace RestaurantBooking.Controllers
         public async Task<ActionResult> UpdateMenuItem(int id, UpdateMenuItemDTO updateMenuItem)
         {
             await _menuItemService.UpdateMenuItemAsync(updateMenuItem);
-            return Ok("Menu Item updated!");
+            return Ok(updateMenuItem);
         }
+
         [HttpDelete]
         [Route("deleteMenuItem/{id}")]
         public async Task<ActionResult> DeleteMenuItem(int id)
