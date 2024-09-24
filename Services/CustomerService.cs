@@ -22,7 +22,7 @@ namespace RestaurantBooking.Services
                 FirstName = c.FirstName,
                 LastName = c.LastName,
                 PhoneNumber = c.PhoneNumber,
-            });
+            }).ToList();
 
             return customerList;
         }
