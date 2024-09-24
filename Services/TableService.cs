@@ -29,13 +29,21 @@ namespace RestaurantBooking.Services
         public async Task<GetTableDTO> GetTableByIdAsync(int id)
         {
             var foundTable = await _tableRepository.GetTableByIdAsync(id);
-            var table = new GetTableDTO
+
+            if(foundTable != null)
             {
-                TableID = foundTable.TableID,
-                TableNumber = foundTable.TableNumber,
-                NumberOfSeats = foundTable.NumberOfSeats,
-            };
-            return table;
+                var table = new GetTableDTO
+                {
+                    TableID = foundTable.TableID,
+                    TableNumber = foundTable.TableNumber,
+                    NumberOfSeats = foundTable.NumberOfSeats,
+                };
+                return table;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Table with ID {id} not found!");
+            }
         }
         public async Task AddTableAsync(CreateTableDTO createTable)
         {
@@ -57,11 +65,17 @@ namespace RestaurantBooking.Services
         {
             var table = await _tableRepository.GetTableByIdAsync(updateTable.TableID);
 
-            table.TableNumber = updateTable.TableNumber;
-            table.NumberOfSeats = updateTable.NumberOfSeats;
+            if(table != null)
+            {
+                table.TableNumber = updateTable.TableNumber;
+                table.NumberOfSeats = updateTable.NumberOfSeats;
 
-            await _tableRepository.UpdateTableAsync(table);
-
+                await _tableRepository.UpdateTableAsync(table);
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Table not found!");
+            }
         }
     }
 }
