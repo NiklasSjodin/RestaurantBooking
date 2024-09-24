@@ -36,7 +36,7 @@ namespace RestaurantBooking.Controllers
         {
             await _reservationService.AddReservationAsync(createReservation);
 
-            return Ok("Reservation created successfully!");
+            return Ok(createReservation);
         }
 
         [HttpPut]
@@ -44,7 +44,7 @@ namespace RestaurantBooking.Controllers
         public async Task<IActionResult> UpdateReservation(UpdateReservationDTO updateReservation)
         {
             await _reservationService.UpdateReservationAsync(updateReservation);
-            return Ok("Reservation updated!");
+            return Ok(updateReservation);
         }
 
         [HttpDelete]
