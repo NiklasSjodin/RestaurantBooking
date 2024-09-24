@@ -23,7 +23,7 @@ namespace RestaurantBooking.Controllers
 
         [HttpGet]
         [Route("menuItem/{id}")]
-        public async Task<ActionResult> GetMenuItemById(int id)
+        public async Task<ActionResult<GetMenuItemDTO>> GetMenuItemById(int id)
         {
             var menuItem = await _menuItemService.GetMenuItemByIdAsync(id);
             return Ok(menuItem);
