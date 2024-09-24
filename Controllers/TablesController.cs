@@ -34,7 +34,7 @@ namespace RestaurantBooking.Controllers
         public async Task<ActionResult> CreateTable(CreateTableDTO createTable)
         {
             await _tableService.AddTableAsync(createTable);
-            return Ok("Table created successfully!");
+            return Ok(createTable);
         }
 
         [HttpPut]
@@ -42,7 +42,7 @@ namespace RestaurantBooking.Controllers
         public async Task<ActionResult> UpdateTable(int id, UpdateTableDTO updateTable)
         {
             await _tableService.UpdateTableAsync(updateTable);
-            return Ok("Table updated!");
+            return Ok(updateTable);
         }
 
         [HttpDelete]
