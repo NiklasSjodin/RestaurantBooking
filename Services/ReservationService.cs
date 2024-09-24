@@ -1,8 +1,10 @@
 ﻿using RestaurantBooking.Data.Repos.IRepos;
 using RestaurantBooking.Models;
 using RestaurantBooking.Models.DTOs.Reservation;
+using RestaurantBooking.Services.IServices;
+using System.Linq.Expressions;
 
-namespace RestaurantBooking.Services.IServices
+namespace RestaurantBooking.Services
 {
     public class ReservationService : IReservationService
     {
@@ -22,6 +24,7 @@ namespace RestaurantBooking.Services.IServices
                 FirstName = r.Customer.FirstName,
                 Time = r.Time,
                 TableNumber = r.Table.TableNumber,
+                NumberOfGuests = r.NumberOfGuests,
             }).ToList();
 
             return reservationsList;
@@ -30,16 +33,26 @@ namespace RestaurantBooking.Services.IServices
         public async Task<GetReservationDTO> GetReservationByIdAsync(int id)
         {
             var reservation = await _reservationRepository.GetReservationByIdAsync(id);
-            var reservationDTO = new GetReservationDTO
-            {
-                ReservationId = reservation.ReservationId,
-                CustomerID = reservation.FK_CustomerID,
-                FirstName = reservation.Customer.FirstName,
-                Time = reservation.Time,
-                TableNumber = reservation.Table.TableNumber,
-            };
 
-            return reservationDTO;
+            if(reservation != null)
+            {
+                var reservationDTO = new GetReservationDTO
+                {
+                    ReservationId = reservation.ReservationId,
+                    CustomerID = reservation.FK_CustomerID,
+                    FirstName = reservation.Customer.FirstName,
+                    Time = reservation.Time,
+                    TableNumber = reservation.Table.TableNumber,
+                    NumberOfGuests= reservation.NumberOfGuests,
+                };
+
+                return reservationDTO;
+            }
+            else
+            {
+                throw new KeyNotFoundException($"Reservation with ID {id} not found!");
+            }
+
         }
         public async Task AddReservationAsync(CreateReservationDTO createReservation)
         {
@@ -73,6 +86,10 @@ namespace RestaurantBooking.Services.IServices
                 reservationFound.NumberOfGuests = updateReservation.NumberOfGuests;
 
                 await _reservationRepository.UpdateReservationAsync(reservationFound);
+            }
+            else
+            {
+                throw new KeyNotFoundException("Reservation not found!");
             }
         }
     }
