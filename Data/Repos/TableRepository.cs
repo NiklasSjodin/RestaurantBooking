@@ -14,12 +14,12 @@ namespace RestaurantBooking.Data.Repos
 
         public async Task<IEnumerable<Table>> GetAllTablesAsync()
         {
-           return await _context.Tables.ToListAsync();
+           return await _context.Tables.AsNoTracking().ToListAsync();
         }
 
         public Task<Table> GetTableByIdAsync(int id)
         {
-            var table = _context.Tables.FirstOrDefaultAsync(t => t.TableID == id);
+            var table = _context.Tables.AsNoTracking().FirstOrDefaultAsync(t => t.TableID == id);
             return table;
         }
 
