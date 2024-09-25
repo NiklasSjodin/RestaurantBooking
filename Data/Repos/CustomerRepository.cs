@@ -13,11 +13,11 @@ namespace RestaurantBooking.Data.Repos
         }
         public async Task<IEnumerable<Customer>> GetAllCustomersAsync()
         {
-            return await _context.Customers.ToListAsync();
+            return await _context.Customers.AsNoTracking().ToListAsync();
         }
         public async Task<Customer> GetCustomerByIdAsync(int id)
         {
-            var customer = await _context.Customers.FirstOrDefaultAsync(c => c.CustomerID == id);
+            var customer = await _context.Customers.AsNoTracking().FirstOrDefaultAsync(c => c.CustomerID == id);
 
             return customer;
         }
