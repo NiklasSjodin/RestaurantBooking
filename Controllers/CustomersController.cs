@@ -17,8 +17,20 @@ namespace RestaurantBooking.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllCustomers()
         {
-            var customers = await _customerService.GetAllCustomersAsync();
-            return Ok(customers);
+            try
+            {
+                var customers = await _customerService.GetAllCustomersAsync();
+                return Ok(customers);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected eror occurred.");
+            }
+
         }
 
         [HttpGet]
