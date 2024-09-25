@@ -18,41 +18,101 @@ namespace RestaurantBooking.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllReservations()
         {
-            var reservations = await _reservationService.GetAllReservationsAsync();
-            return Ok(reservations);
+            try
+            {
+                var reservations = await _reservationService.GetAllReservationsAsync();
+                return Ok(reservations);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected eror occurred.");
+            }
+
         }
 
         [HttpGet]
         [Route("reservation/{id}")]
         public async Task<ActionResult> GetReservationById(int id)
         {
-            var reservation = await _reservationService.GetReservationByIdAsync(id);
-            return Ok(reservation);
+            try
+            {
+                var reservation = await _reservationService.GetReservationByIdAsync(id);
+                return Ok(reservation);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected eror occurred.");
+            }
+
         }
 
         [HttpPost]
         [Route("createReservation")]
         public async Task<IActionResult> CreateReservation(CreateReservationDTO createReservation)
         {
-            await _reservationService.AddReservationAsync(createReservation);
+            try
+            {
+                await _reservationService.AddReservationAsync(createReservation);
 
-            return Ok(createReservation);
+                return Ok(createReservation);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while creating the reservation.");
+            }
+
         }
 
         [HttpPut]
         [Route("updateReservation/{id}")]
         public async Task<IActionResult> UpdateReservation(UpdateReservationDTO updateReservation)
         {
-            await _reservationService.UpdateReservationAsync(updateReservation);
-            return Ok(updateReservation);
+            try
+            {
+                await _reservationService.UpdateReservationAsync(updateReservation);
+                return Ok(updateReservation);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the reservation.");
+            }
+
         }
 
         [HttpDelete]
         [Route("deleteReservation/{id}")]
         public async Task<IActionResult> DeleteReservation(int id)
         {
-            await _reservationService.DeleteReservationAsync(id);
-            return Ok("Reservation deleted!");
+            try
+            {
+                await _reservationService.DeleteReservationAsync(id);
+                return Ok("Reservation deleted!");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"No reservation with ID {id} found!");
+            }
+
         }
     }
 }
