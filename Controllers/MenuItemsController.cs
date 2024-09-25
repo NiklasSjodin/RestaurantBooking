@@ -17,40 +17,100 @@ namespace RestaurantBooking.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllMenuItems()
         {
-            var menuItems = await _menuItemService.GetAllMenuItemsAsync();
-            return Ok(menuItems);
+            try
+            {
+                var menuItems = await _menuItemService.GetAllMenuItemsAsync();
+                return Ok(menuItems);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected eror occurred.");
+            }
+
         }
 
         [HttpGet]
         [Route("menuItem/{id}")]
         public async Task<ActionResult<GetMenuItemDTO>> GetMenuItemById(int id)
         {
-            var menuItem = await _menuItemService.GetMenuItemByIdAsync(id);
-            return Ok(menuItem);
+            try
+            {
+                var menuItem = await _menuItemService.GetMenuItemByIdAsync(id);
+                return Ok(menuItem);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected eror occurred.");
+            }
+            
         }
 
         [HttpPost]
         [Route("createMenItem")]
         public async Task<ActionResult> CreateMenuItem(CreateMenuItemDTO createMenuItem)
         {
-            await _menuItemService.AddMenuItemAsync(createMenuItem);
-            return Ok(createMenuItem);
+            try
+            {
+                await _menuItemService.AddMenuItemAsync(createMenuItem);
+                return Ok(createMenuItem);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while creating the menu item.");
+            }
+
         }
 
         [HttpPut]
         [Route("updateMenuItem/{id}")]
         public async Task<ActionResult> UpdateMenuItem(int id, UpdateMenuItemDTO updateMenuItem)
         {
-            await _menuItemService.UpdateMenuItemAsync(updateMenuItem);
-            return Ok(updateMenuItem);
+            try
+            {
+                await _menuItemService.UpdateMenuItemAsync(updateMenuItem);
+                return Ok(updateMenuItem);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the menu item.");
+            }
+
         }
 
         [HttpDelete]
         [Route("deleteMenuItem/{id}")]
         public async Task<ActionResult> DeleteMenuItem(int id)
         {
-            await _menuItemService.DeleteMenuItemAsync(id);
-            return Ok("Menu Item deleted");
+            try
+            {
+                await _menuItemService.DeleteMenuItemAsync(id);
+                return Ok("Menu Item deleted");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"No menu item with ID {id} found!");
+            }
+
         }
     }
 }
