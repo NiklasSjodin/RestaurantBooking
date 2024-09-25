@@ -17,40 +17,99 @@ namespace RestaurantBooking.Controllers
         [HttpGet]
         public async Task<IActionResult> GetAllTables()
         {
-            var tables = await _tableService.GetAllTablesAsync();
-            return Ok(tables);
+            try
+            {
+                var tables = await _tableService.GetAllTablesAsync();
+                return Ok(tables);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected eror occurred.");
+            }
+
         }
 
         [HttpGet]
         [Route("table/{id}")]
         public async Task<ActionResult<GetTableDTO>> GetTablesById(int id)
         {
-            var table = await _tableService.GetTableByIdAsync(id);
-            return Ok(table);
+            try
+            {
+                var table = await _tableService.GetTableByIdAsync(id);
+                return Ok(table);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected eror occurred.");
+            }
+            
         }
 
         [HttpPost]
         [Route("createTable")]
         public async Task<ActionResult> CreateTable(CreateTableDTO createTable)
         {
-            await _tableService.AddTableAsync(createTable);
-            return Ok(createTable);
+            try
+            {
+                await _tableService.AddTableAsync(createTable);
+                return Ok(createTable);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while creating the table.");
+            }
+
         }
 
         [HttpPut]
         [Route("updateTable/{id}")]
         public async Task<ActionResult> UpdateTable(int id, UpdateTableDTO updateTable)
         {
-            await _tableService.UpdateTableAsync(updateTable);
-            return Ok(updateTable);
+            try
+            {
+                await _tableService.UpdateTableAsync(updateTable);
+                return Ok(updateTable);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An error occurred while updating the table.");
+            }
         }
 
         [HttpDelete]
         [Route("deleteTable/{id}")]
         public async Task<ActionResult> DeleteTable(int id)
         {
-            await _tableService.DeleteTableAsync(id);
-            return Ok("Table deleted!");
+            try
+            {
+                await _tableService.DeleteTableAsync(id);
+                return Ok("Table deleted!");
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, $"No table with ID {id} found!");
+            }
+
         }
     }
 }
