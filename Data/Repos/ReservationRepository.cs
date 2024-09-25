@@ -14,7 +14,7 @@ namespace RestaurantBooking.Data.Repos
 
         public async Task<IEnumerable<Reservation>> GetAllReservationsAsync()
         {
-            return await _context.Reservations
+            return await _context.Reservations.AsNoTracking()
                 .Include(r => r.Customer)
                 .Include(r => r.Table)
                 .ToListAsync();
@@ -22,7 +22,7 @@ namespace RestaurantBooking.Data.Repos
 
         public async Task<Reservation> GetReservationByIdAsync(int id)
         {
-            var reservation = await _context.Reservations
+            var reservation = await _context.Reservations.AsNoTracking()
                 .Include(r => r.Customer)
                 .Include(r => r.Table)
                 .FirstOrDefaultAsync(r => r.ReservationId == id);
