@@ -16,6 +16,33 @@
 - **Menu management**: Manage the restaurant's menu with dishes, prices and availability.
 
 ## Using Endpoints
+### Customers endpoint
+- GET - /api/Customers
+- GET - /api/Customers/customer/{id}
+- POST - /api/Customers/createCustomer
+- PUT - /api/Customers/updateCustomer/{id}
+- DELETE - /api/Customers/deleteCustomer{id}
+
+### Menu Items endpoint
+- GET - /api/MenuItems
+- GET - /api/MenuItems/menuItem/{id}
+- POST - /api/MenuItems/createMenuItem
+- PUT - /api/MenuItems/updateMenuItem/{id}
+- DELETE - /api/MenuItems/deleteMenuItem/{id}
+
+### Reservations endpoint
+- GET - /api/Reservations
+- GET - /api/Reservations/reservation/{id}
+- POST - /api/Reservations/createReservation
+- PUT - /api/Reservations/updateReservation/{id}
+- DELETE - /api/Reservations/deleteReservation/{id}
+
+### Tables endpoint
+- GET - /api/Tables
+- GET - /api/Tables/reservation/{id}
+- POST - /api/Tables/createTable/
+- PUT - /api/Tables/updateTable/{id}
+- DELETE - /api/Tables/deleteTable/{id}
 
 ## Getting Started
 - **Clone the project from GitHub:**
