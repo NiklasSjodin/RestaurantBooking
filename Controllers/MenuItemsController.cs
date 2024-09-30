@@ -54,7 +54,7 @@ namespace RestaurantBooking.Controllers
         }
 
         [HttpPost]
-        [Route("createMenItem")]
+        [Route("createMenuItem")]
         public async Task<ActionResult> CreateMenuItem(CreateMenuItemDTO createMenuItem)
         {
             try
