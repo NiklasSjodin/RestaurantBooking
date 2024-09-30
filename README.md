@@ -2,6 +2,7 @@
 
 ## Table of Content
 - [Functionality](#functionality)
+- [ER Diagram](#er-diagram)
 - [Using Endpoints](#using-endpoints)
 - [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
@@ -14,6 +15,9 @@
 - **Customer management**: Store customer information such as name and contact details.
 - **Booking management**: Manage bookings linked to tables and customers, including date, time and number of people.
 - **Menu management**: Manage the restaurant's menu with dishes, prices and availability.
+
+## ER Diagram
+![Skärmbild 2024-09-30 153213](https://github.com/user-attachments/assets/f1aa4002-22c1-46e7-975e-c30381cdd0a8)
 
 ## Using Endpoints
 ### Customers endpoint
