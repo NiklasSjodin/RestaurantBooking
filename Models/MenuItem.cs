@@ -12,7 +12,12 @@ namespace RestaurantBooking.Models
         public string Name { get; set; }
 
         [Required]
+        public string Description { get; set; }
+
+        [Required]
         public double Price { get; set; }
+        [Required]
+        public string TypeOf { get; set; }
 
         [Required]
         public bool IsAvailable { get; set; } 
