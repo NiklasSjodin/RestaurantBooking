@@ -22,7 +22,9 @@ namespace RestaurantBooking.Services
             {
                 ItemId = mi.ItemId,
                 Name = mi.Name,
+                Description = mi.Description,
                 Price = mi.Price,
+                TypeOf = mi.TypeOf,
                 IsAvailable = mi.IsAvailable,
             }).ToList();
             return menuItemsList;
@@ -38,7 +40,9 @@ namespace RestaurantBooking.Services
                 {
                     ItemId = foundMenuItem.ItemId,
                     Name = foundMenuItem.Name,
+                    Description = foundMenuItem.Description,
                     Price = foundMenuItem.Price,
+                    TypeOf = foundMenuItem.TypeOf,
                     IsAvailable = foundMenuItem.IsAvailable,
                 };
                 return menuItem;
@@ -55,7 +59,9 @@ namespace RestaurantBooking.Services
             var newMenuItem = new MenuItem
             {
                 Name = createMenuItem.Name,
+                Description = createMenuItem.Description,
                 Price = createMenuItem.Price,
+                TypeOf = createMenuItem.TypeOf,
                 IsAvailable = createMenuItem.IsAvailable,
             };
 
@@ -75,6 +81,7 @@ namespace RestaurantBooking.Services
             if(menuItem != null)
             {
                 menuItem.Name = updateMenuItem.Name;
+                menuItem.Description = updateMenuItem.Description;
                 menuItem.Price = updateMenuItem.Price;
                 menuItem.IsAvailable = updateMenuItem.IsAvailable;
 
