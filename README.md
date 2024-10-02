@@ -2,6 +2,7 @@
 
 ## Table of Content
 - [Functionality](#functionality)
+- [ER Diagram](#er-diagram)
 - [Using Endpoints](#using-endpoints)
 - [Getting Started](#getting-started)
 - [Prerequisites](#prerequisites)
@@ -15,34 +16,169 @@
 - **Booking management**: Manage bookings linked to tables and customers, including date, time and number of people.
 - **Menu management**: Manage the restaurant's menu with dishes, prices and availability.
 
+## ER Diagram
+![Skärmbild 2024-09-30 153213](https://github.com/user-attachments/assets/f1aa4002-22c1-46e7-975e-c30381cdd0a8)
+
 ## Using Endpoints
 ### Customers endpoint
 - GET - /api/Customers
+```json
+    {
+    "customerID": 3,
+    "firstName": "Linda",
+    "lastName": "Ohlsson",
+    "phoneNumber": "070xxxxxxxx"
+  }
+  ```
 - GET - /api/Customers/customer/{id}
+```json
+{
+  "customerID": 3,
+  "firstName": "Linda",
+  "lastName": "Ohlsson",
+  "phoneNumber": "070xxxxxxxx"
+}
+```
 - POST - /api/Customers/createCustomer
+ ```json
+{
+  "firstName": "Niklas",
+  "lastName": "Sjödin",
+  "phoneNumber": "070xxxxxxx"
+}
+```
 - PUT - /api/Customers/updateCustomer/{id}
+ ```json
+{
+  "customerID": 4,
+  "firstName": "Niklas",
+  "lastName": "Sjödin",
+  "phoneNumber": "07xxxxxxxx"
+}
+```
 - DELETE - /api/Customers/deleteCustomer{id}
+```json
+Customer deleted!
+```
 
 ### Menu Items endpoint
 - GET - /api/MenuItems
+ ```json
+{
+    "itemId": 1,
+    "name": "Meat and Fries",
+    "price": 30,
+    "isAvailable": true
+  }
+```
 - GET - /api/MenuItems/menuItem/{id}
+ ```json
+{
+    "itemId": 1,
+    "name": "Meat and Fries",
+    "price": 30,
+    "isAvailable": true
+  }
+```
 - POST - /api/MenuItems/createMenuItem
+ ```json
+{
+    "name": "Lobster with Rice",
+    "price": 40,
+    "isAvailable": true
+  }
+```
 - PUT - /api/MenuItems/updateMenuItem/{id}
+ ```json
+{
+    "itemId": 1,
+    "name": "Meat and Fries",
+    "price": 35,
+    "isAvailable": true
+  }
+```
 - DELETE - /api/MenuItems/deleteMenuItem/{id}
+```json
+Menu Item deleted!
+```
 
 ### Reservations endpoint
 - GET - /api/Reservations
+ ```json
+  {
+    "reservationId": 4,
+    "customerID": 3,
+    "firstName": "Linda",
+    "time": "2024-09-30T13:08:18.942",
+    "tableNumber": 0,
+    "numberOfGuests": 2
+  }
+```
 - GET - /api/Reservations/reservation/{id}
+ ```json
+  {
+    "reservationId": 4,
+    "customerID": 3,
+    "firstName": "Linda",
+    "time": "2024-09-30T13:08:18.942",
+    "tableNumber": 0,
+    "numberOfGuests": 2
+  }
+```
 - POST - /api/Reservations/createReservation
+```json
+ {
+  "tableID": 3,
+  "customerID": 3,
+  "time": "2024-09-30T13:08:18.942Z",
+  "numberOfGuests": 2
+}
+```
 - PUT - /api/Reservations/updateReservation/{id}
+```json
+{
+  "reservationId": 4,
+  "time": "2024-09-30T13:10:33.942Z",
+  "numberOfGuests": 4
+}
+```
 - DELETE - /api/Reservations/deleteReservation/{id}
+```json
+Reservation deleted!
+```
 
 ### Tables endpoint
 - GET - /api/Tables
+```json
+   "tableID": 3,
+    "tableNumber": 0,
+    "numberOfSeats": 0
+  }
+```
 - GET - /api/Tables/reservation/{id}
+```json
+   "tableID": 3,
+    "tableNumber": 0,
+    "numberOfSeats": 0
+  }
+```
 - POST - /api/Tables/createTable/
+```json
+    "tableNumber": 2,
+    "numberOfSeats": 4
+  }
+```
 - PUT - /api/Tables/updateTable/{id}
+```json
+   "tableID": 5,
+    "tableNumber": 2,
+    "numberOfSeats": 6
+  }
+```
 - DELETE - /api/Tables/deleteTable/{id}
+```json
+Table deleted!
+```
 
 ## Getting Started
 - **Clone the project from GitHub:**
