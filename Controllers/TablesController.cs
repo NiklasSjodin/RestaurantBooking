@@ -11,7 +11,7 @@ namespace RestaurantBooking.Controllers
         private readonly ITableService _tableService;
         public TablesController(ITableService tableService)
         {
-             _tableService = tableService;
+            _tableService = tableService;
         }
 
         [HttpGet]
@@ -30,8 +30,27 @@ namespace RestaurantBooking.Controllers
             {
                 return StatusCode(500, "An unexpected eror occurred.");
             }
-
         }
+
+        [HttpGet]
+        [Route("availableTables")]
+        public async Task<IActionResult> GetAvailableTables([FromQuery] DateTime reservationDate, [FromQuery] int numberOfGuests)
+        {
+            try
+            {
+                var availableTables = await _tableService.GetAvailableTablesAsync(reservationDate, numberOfGuests);
+                return Ok(availableTables);
+            }
+            catch (KeyNotFoundException ex)
+            {
+                return NotFound(ex.Message);
+            }
+            catch (Exception ex)
+            {
+                return StatusCode(500, "An unexpected error occurred.");
+            }
+        }
+
 
         [HttpGet]
         [Route("table/{id}")]
