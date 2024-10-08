@@ -16,7 +16,16 @@ namespace RestaurantBooking.Data.Repos
         {
            return await _context.Tables.AsNoTracking().ToListAsync();
         }
+        public async Task<IEnumerable<Table>> GetAvailableTablesAsync(DateTime reservationDate, int numberOfGuests)
+        {
+            var availableTables = await _context.Tables
+                .Where(t => t.NumberOfSeats >= numberOfGuests &&
+                !t.Reservations.Any(r => r.Time == reservationDate))
+                .AsNoTracking()
+                .ToListAsync();
 
+            return availableTables;
+        }
         public Task<Table> GetTableByIdAsync(int id)
         {
             var table = _context.Tables.AsNoTracking().FirstOrDefaultAsync(t => t.TableID == id);
