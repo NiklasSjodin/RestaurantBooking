@@ -8,7 +8,7 @@ namespace RestaurantBooking.Services.IServices
     {
         Task<IEnumerable<GetCustomerDTO>> GetAllCustomersAsync();
         Task<GetCustomerDTO> GetCustomerByIdAsync(int id);
-        Task AddCustomerAsync(CreateCustomerDTO createCustomer);
+        Task<CustomerDTO> AddCustomerAsync(CreateCustomerDTO createCustomer);
         Task UpdateCustomerAsync(UpdateCustomerDTO updateCustomer);
         Task DeleteCustomerAsync(int id);
     }
