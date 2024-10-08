@@ -14,6 +14,16 @@ builder.Services.AddDbContext<RestaurantContext>(options =>
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddCors(options => // Registrerar CORS-tjänster för förfrågningar
+{
+    options.AddPolicy("LocalReact", policy => // Lägger till policy för "LocalReact"
+    {
+        policy.WithOrigins("http://localhost:5173") // Tillåter förfrågningar från en specifik URL
+        .AllowAnyHeader() // Tillåter alla typer av HTTP-headers i förfrågningarna
+        .AllowAnyMethod(); // Tillåter alla typer av HTTP-metoder i förfrågningarna
+    });
+});
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -41,6 +51,8 @@ if (app.Environment.IsDevelopment())
 }
 
 app.UseHttpsRedirection();
+
+app.UseCors("LocalReact");
 
 app.UseAuthorization();
 
