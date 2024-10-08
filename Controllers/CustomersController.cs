@@ -58,9 +58,9 @@ namespace RestaurantBooking.Controllers
         {
             try
             {
-                await _customerService.AddCustomerAsync(createCustomer);
+                var newCustomer = await _customerService.AddCustomerAsync(createCustomer);
 
-                return Ok(createCustomer);
+                return Ok(newCustomer);
             }
             catch(KeyNotFoundException ex)
             {
