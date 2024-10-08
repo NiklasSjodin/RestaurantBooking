@@ -77,7 +77,7 @@ namespace RestaurantBooking.Controllers
 
         [HttpPut]
         [Route("updateReservation/{id}")]
-        public async Task<IActionResult> UpdateReservation(UpdateReservationDTO updateReservation)
+        public async Task<IActionResult> UpdateReservation(int id, UpdateReservationDTO updateReservation)
         {
             try
             {

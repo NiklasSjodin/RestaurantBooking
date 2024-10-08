@@ -9,9 +9,11 @@ namespace RestaurantBooking.Services
     public class ReservationService : IReservationService
     {
         private readonly IReservationRepository _reservationRepository;
-        public ReservationService(IReservationRepository reservationRepo)
+        private readonly ITableRepository _tableRepository;
+        public ReservationService(IReservationRepository reservationRepo, ITableRepository tableRepository)
         {
             _reservationRepository = reservationRepo;
+            _tableRepository = tableRepository;
         }
 
         public async Task<IEnumerable<GetReservationDTO>> GetAllReservationsAsync()
@@ -56,6 +58,18 @@ namespace RestaurantBooking.Services
         }
         public async Task AddReservationAsync(CreateReservationDTO createReservation)
         {
+            var table = await _tableRepository.GetTableByIdAsync(createReservation.TableID);
+
+            if(table == null)
+            {
+                throw new KeyNotFoundException($"Table with Id {createReservation.TableID} not found.");
+            }
+
+            if (createReservation.NumberOfGuests > table.NumberOfSeats)
+            {
+                throw new InvalidOperationException($"Max guests for the table is {table.NumberOfSeats}.");
+            }
+
             var newReservation = new Reservation
             {
                 Time = createReservation.Time,
