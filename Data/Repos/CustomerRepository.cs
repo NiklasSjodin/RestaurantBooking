@@ -22,10 +22,11 @@ namespace RestaurantBooking.Data.Repos
             return customer;
         }
 
-        public async Task AddCustomerAsync(Customer customer)
+        public async Task<Customer> AddCustomerAsync(Customer customer)
         {
             await _context.Customers.AddAsync(customer);
             await _context.SaveChangesAsync();
+            return customer;
         }
 
         public async Task DeleteCustomerAsync(Customer customer)
