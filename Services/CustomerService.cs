@@ -49,7 +49,7 @@ namespace RestaurantBooking.Services
             }
             
         }
-        public async Task AddCustomerAsync(CreateCustomerDTO createCustomer)
+        public async Task<CustomerDTO> AddCustomerAsync(CreateCustomerDTO createCustomer)
         {
             var newCustomer = new Customer
             {
@@ -59,7 +59,19 @@ namespace RestaurantBooking.Services
             };
 
             await _customerRepository.AddCustomerAsync(newCustomer);
+
+            var customerDto = new CustomerDTO
+            {
+                CustomerID = newCustomer.CustomerID,
+                FirstName = newCustomer.FirstName,
+                LastName = newCustomer.LastName,
+                PhoneNumber = newCustomer.PhoneNumber,
+            };
+
+
+            return customerDto; 
         }
+
 
         public async Task DeleteCustomerAsync(int id)
         {
