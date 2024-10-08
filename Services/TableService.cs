@@ -26,6 +26,20 @@ namespace RestaurantBooking.Services
             return tablesList;
         }
 
+        public async Task<IEnumerable<GetTableDTO>> GetAvailableTablesAsync(DateTime reservationDate, int numberOfGuests)
+        {
+            var availableTables = await _tableRepository.GetAvailableTablesAsync(reservationDate, numberOfGuests);
+
+            var tablesList = availableTables.Select(t => new GetTableDTO
+            {
+                TableID = t.TableID,
+                TableNumber = t.TableNumber,
+                NumberOfSeats = t.NumberOfSeats
+            }).ToList();
+
+            return tablesList;
+        }
+
         public async Task<GetTableDTO> GetTableByIdAsync(int id)
         {
             var foundTable = await _tableRepository.GetTableByIdAsync(id);
