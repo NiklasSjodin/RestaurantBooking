@@ -80,6 +80,14 @@ namespace RestaurantBooking.Services
                 throw new ArgumentException("The restaurant is open between 17:00 and 23:00.");
             }
 
+            var reservationEndTime = createReservation.Time.AddMinutes(120);
+
+            var existingReservations = await _reservationRepository.GetReservationsBetweenAsync(createReservation.Time, reservationEndTime);
+            if(existingReservations.Any(r => r.FK_TableId == createReservation.TableID))
+            {
+                throw new InvalidOperationException("The selected table is already booked for this time.");
+            }
+
             var newReservation = new Reservation
             {
                 Time = createReservation.Time,
