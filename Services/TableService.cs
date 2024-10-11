@@ -30,6 +30,21 @@ namespace RestaurantBooking.Services
         {
             var availableTables = await _tableRepository.GetAvailableTablesAsync(reservationDate, numberOfGuests);
 
+            if (reservationDate.Date < DateTime.UtcNow.Date)
+            {
+                throw new ArgumentException("You cannot book a table for a date in the past.");
+            }
+
+            // Kontrollera att tiden är inom bokningsbara tiderna (17:00 till 23:00 nästa dag)
+            var restaurantCloseTime = new TimeSpan(23, 0, 0);
+            var restaurantOpenTime = new TimeSpan(17, 0, 0);
+
+            if (reservationDate.TimeOfDay < restaurantOpenTime ||
+                (reservationDate.TimeOfDay > restaurantCloseTime))
+            {
+                throw new ArgumentException("The restaurant is open between 17:00 and 23:00.");
+            }
+
             var tablesList = availableTables.Select(t => new GetTableDTO
             {
                 TableID = t.TableID,
