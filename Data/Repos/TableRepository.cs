@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using RestaurantBooking.Data.Repos.IRepos;
 using RestaurantBooking.Models;
+using System.Linq;
 
 namespace RestaurantBooking.Data.Repos
 {
@@ -18,11 +19,17 @@ namespace RestaurantBooking.Data.Repos
         }
         public async Task<IEnumerable<Table>> GetAvailableTablesAsync(DateTime reservationDate, int numberOfGuests)
         {
-            var availableTables = await _context.Tables
-                .Where(t => t.NumberOfSeats >= numberOfGuests &&
-                !t.Reservations.Any(r => r.Time == reservationDate))
-                .AsNoTracking()
+            var endTime = reservationDate.AddMinutes(120);
+
+            var overlappingReservations = await _context.Reservations
+                .Where(r => (r.Time < endTime) && (r.Time.AddMinutes(120) > reservationDate))
                 .ToListAsync();
+
+            var bookedTableIds = overlappingReservations.Select(r => r.FK_TableId).ToList();
+
+            var availableTables = await _context.Tables
+                 .Where(t => t.NumberOfSeats >= numberOfGuests && !bookedTableIds.Contains(t.TableID))
+                 .ToListAsync();
 
             return availableTables;
         }
