@@ -70,6 +70,16 @@ namespace RestaurantBooking.Services
                 throw new InvalidOperationException($"Max guests for the table is {table.NumberOfSeats}.");
             }
 
+            // Kontrollera att tiden är inom bokningsbara tiderna (17:00 till 23:00)
+            var restaurantOpenTime = new TimeSpan(17, 0, 0);
+            var restaurantCloseTime = new TimeSpan(23, 0, 0);
+
+            // Check if the reservation time is outside the allowed hours
+            if (createReservation.Time.TimeOfDay < restaurantOpenTime || createReservation.Time.TimeOfDay > restaurantCloseTime)
+            {
+                throw new ArgumentException("The restaurant is open between 17:00 and 23:00.");
+            }
+
             var newReservation = new Reservation
             {
                 Time = createReservation.Time,
