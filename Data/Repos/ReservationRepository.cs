@@ -29,6 +29,13 @@ namespace RestaurantBooking.Data.Repos
 
             return reservation;
         }
+        public async Task<IEnumerable<Reservation>> GetReservationsBetweenAsync(DateTime starTime, DateTime endTime)
+        {
+           return await _context.Reservations
+                .Where(r => r.Time < endTime && r.Time.AddMinutes(120) > starTime)
+                .ToListAsync();
+        }
+
         public async Task AddReservationAsync(Reservation reservation)
         {
             await _context.Reservations.AddAsync(reservation);
@@ -46,5 +53,7 @@ namespace RestaurantBooking.Data.Repos
             _context.Reservations.Update(reservation);
             await _context.SaveChangesAsync();
         }
+
+        
     }
 }
