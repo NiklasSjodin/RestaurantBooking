@@ -28,8 +28,6 @@ namespace RestaurantBooking.Services
 
         public async Task<IEnumerable<GetTableDTO>> GetAvailableTablesAsync(DateTime reservationDate, int numberOfGuests)
         {
-            var availableTables = await _tableRepository.GetAvailableTablesAsync(reservationDate, numberOfGuests);
-
             if (reservationDate.Date < DateTime.UtcNow.Date)
             {
                 throw new ArgumentException("You cannot book a table for a date in the past.");
@@ -44,6 +42,8 @@ namespace RestaurantBooking.Services
             {
                 throw new ArgumentException("The restaurant is open between 17:00 and 23:00.");
             }
+
+            var availableTables = await _tableRepository.GetAvailableTablesAsync(reservationDate, numberOfGuests);
 
             var tablesList = availableTables.Select(t => new GetTableDTO
             {
