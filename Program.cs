@@ -1,7 +1,9 @@
+using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using RestaurantBooking.Data;
 using RestaurantBooking.Data.Repos;
 using RestaurantBooking.Data.Repos.IRepos;
+using RestaurantBooking.Models;
 using RestaurantBooking.Services;
 using RestaurantBooking.Services.IServices;
 
@@ -24,6 +26,20 @@ builder.Services.AddCors(options => // Registrerar CORS-tjänster för förfrågning
         .AllowAnyMethod(); // Tillåter alla typer av HTTP-metoder i förfrågningarna
     });
 });
+
+builder.Services.AddIdentity<IdentityUser, IdentityRole>()
+    .AddEntityFrameworkStores<RestaurantContext>()
+    .AddDefaultTokenProviders();
+
+builder.Services.Configure<IdentityOptions>(options =>
+{
+    options.Password.RequireDigit = false;
+    options.Password.RequireLowercase = false;
+    options.Password.RequireUppercase = false;
+    options.Password.RequireNonAlphanumeric = false;
+    options.Password.RequiredLength = 6;
+});
+
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -54,8 +70,16 @@ app.UseHttpsRedirection();
 
 app.UseCors("LocalReact");
 
+app.UseAuthentication();
+
 app.UseAuthorization();
 
 app.MapControllers();
+
+using(var scope = app.Services.CreateScope())
+{
+    var services = scope.ServiceProvider;
+    await SeedData.Initialize(services);
+}
 
 app.Run();
