@@ -1,11 +1,9 @@
-﻿using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
-using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.EntityFrameworkCore;
 using RestaurantBooking.Models;
 
 namespace RestaurantBooking.Data
 {
-    public class RestaurantContext : IdentityDbContext<IdentityUser>
+    public class RestaurantContext : DbContext
     {
         public RestaurantContext(DbContextOptions<RestaurantContext> options) : base(options)
         {
@@ -16,6 +14,6 @@ namespace RestaurantBooking.Data
         public DbSet<MenuItem> MenuItems { get; set; }
         public DbSet<Reservation> Reservations { get; set; }
         public DbSet<Table> Tables { get; set; }
-
+        public DbSet<Account> Accounts { get; set; }
     }
 }

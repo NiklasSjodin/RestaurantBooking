@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using RestaurantBooking.Models.DTOs.MenuItem;
 using RestaurantBooking.Services.IServices;
@@ -35,6 +36,7 @@ namespace RestaurantBooking.Controllers
 
         [HttpGet]
         [Route("menuItem/{id}")]
+        [Authorize]
         public async Task<ActionResult<GetMenuItemDTO>> GetMenuItemById(int id)
         {
             try
@@ -55,6 +57,7 @@ namespace RestaurantBooking.Controllers
 
         [HttpPost]
         [Route("createMenuItem")]
+        [Authorize]
         public async Task<ActionResult> CreateMenuItem(CreateMenuItemDTO createMenuItem)
         {
             try
@@ -75,6 +78,7 @@ namespace RestaurantBooking.Controllers
 
         [HttpPut]
         [Route("updateMenuItem/{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateMenuItem(int id, UpdateMenuItemDTO updateMenuItem)
         {
             try
@@ -95,6 +99,7 @@ namespace RestaurantBooking.Controllers
 
         [HttpDelete]
         [Route("deleteMenuItem/{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteMenuItem(int id)
         {
             try

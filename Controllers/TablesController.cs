@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantBooking.Models.DTOs.Table;
 using RestaurantBooking.Services.IServices;
 
@@ -13,7 +14,7 @@ namespace RestaurantBooking.Controllers
         {
             _tableService = tableService;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllTables()
         {
@@ -51,7 +52,7 @@ namespace RestaurantBooking.Controllers
             }
         }
 
-
+        [Authorize]
         [HttpGet]
         [Route("table/{id}")]
         public async Task<ActionResult<GetTableDTO>> GetTablesById(int id)
@@ -71,7 +72,7 @@ namespace RestaurantBooking.Controllers
             }
             
         }
-
+        [Authorize]
         [HttpPost]
         [Route("createTable")]
         public async Task<ActionResult> CreateTable(CreateTableDTO createTable)
@@ -91,7 +92,7 @@ namespace RestaurantBooking.Controllers
             }
 
         }
-
+        [Authorize]
         [HttpPut]
         [Route("updateTable/{id}")]
         public async Task<ActionResult> UpdateTable(int id, UpdateTableDTO updateTable)
@@ -110,7 +111,7 @@ namespace RestaurantBooking.Controllers
                 return StatusCode(500, "An error occurred while updating the table.");
             }
         }
-
+        [Authorize]
         [HttpDelete]
         [Route("deleteTable/{id}")]
         public async Task<ActionResult> DeleteTable(int id)

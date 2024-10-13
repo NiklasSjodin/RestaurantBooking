@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using RestaurantBooking.Models.DTOs.Customer;
 using RestaurantBooking.Services.IServices;
 
@@ -13,7 +14,7 @@ namespace RestaurantBooking.Controllers
         {
             _customerService = customerService;
         }
-
+        [Authorize]
         [HttpGet]
         public async Task<IActionResult> GetAllCustomers()
         {
@@ -32,7 +33,7 @@ namespace RestaurantBooking.Controllers
             }
 
         }
-
+        [Authorize]
         [HttpGet]
         [Route("customer/{id}")]
         public async Task<ActionResult<GetCustomerDTO>> GetCustomerById(int id)
@@ -76,7 +77,7 @@ namespace RestaurantBooking.Controllers
             }
             
         }
-
+        [Authorize]
         [HttpPut]
         [Route("updateCustomer/{id}")]
         public async Task<ActionResult> UpdateCustomer(int id, UpdateCustomerDTO updateCustomer)
@@ -95,7 +96,7 @@ namespace RestaurantBooking.Controllers
             }
             
         }
-
+        [Authorize]
         [HttpDelete]
         [Route("deleteCustomer/{id}")]
         public async Task<ActionResult> DeleteCustomer(int id)

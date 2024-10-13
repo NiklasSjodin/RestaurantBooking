@@ -1,11 +1,12 @@
-using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using RestaurantBooking.Data;
 using RestaurantBooking.Data.Repos;
 using RestaurantBooking.Data.Repos.IRepos;
-using RestaurantBooking.Models;
 using RestaurantBooking.Services;
 using RestaurantBooking.Services.IServices;
+using System.Text;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -16,6 +17,21 @@ builder.Services.AddDbContext<RestaurantContext>(options =>
 });
 
 builder.Services.AddControllers();
+builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
+    .AddJwtBearer(options =>
+    {
+        options.TokenValidationParameters = new TokenValidationParameters
+        {
+            ValidateIssuer = true,
+            ValidateAudience = true,
+            ValidateLifetime = true,
+            ValidateIssuerSigningKey = true,
+            ValidIssuer = builder.Configuration["Jwt:Issuer"],
+            ValidAudience = builder.Configuration["Jwt:Audience"],
+            IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]))
+        };
+    });
+builder.Services.AddAuthorization();
 
 builder.Services.AddCors(options => // Registrerar CORS-tjänster för förfrågningar
 {
@@ -23,21 +39,10 @@ builder.Services.AddCors(options => // Registrerar CORS-tjänster för förfrågning
     {
         policy.WithOrigins("http://localhost:5173") // Tillåter förfrågningar från en specifik URL
         .AllowAnyHeader() // Tillåter alla typer av HTTP-headers i förfrågningarna
-        .AllowAnyMethod(); // Tillåter alla typer av HTTP-metoder i förfrågningarna
+        .AllowAnyMethod() // Tillåter alla typer av HTTP-metoder i förfrågningarna
+
+        .AllowCredentials();
     });
-});
-
-builder.Services.AddIdentity<IdentityUser, IdentityRole>()
-    .AddEntityFrameworkStores<RestaurantContext>()
-    .AddDefaultTokenProviders();
-
-builder.Services.Configure<IdentityOptions>(options =>
-{
-    options.Password.RequireDigit = false;
-    options.Password.RequireLowercase = false;
-    options.Password.RequireUppercase = false;
-    options.Password.RequireNonAlphanumeric = false;
-    options.Password.RequiredLength = 6;
 });
 
 // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
@@ -58,6 +63,8 @@ builder.Services.AddScoped<IReservationService, ReservationService>();
 
 
 var app = builder.Build();
+app.UseAuthentication();
+app.UseAuthorization();
 
 // Configure the HTTP request pipeline.
 if (app.Environment.IsDevelopment())
@@ -70,16 +77,8 @@ app.UseHttpsRedirection();
 
 app.UseCors("LocalReact");
 
-app.UseAuthentication();
-
 app.UseAuthorization();
 
 app.MapControllers();
-
-using(var scope = app.Services.CreateScope())
-{
-    var services = scope.ServiceProvider;
-    await SeedData.Initialize(services);
-}
 
 app.Run();
